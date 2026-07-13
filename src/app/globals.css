@@ -1,42 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #000000;
-  --color-paper: #FFFFFF;
-  --color-signal: #CCFF00;
-  --color-muted: #666666;
-  --color-surface: #0D0D0D;
-  --color-border: #1A1A1A;
-  --font-display: "Space Grotesk", sans-serif;
+  --color-paper: #F2EFE9;
+  --color-ink: #1A1A1A;
+  --color-accent: #2C5F4D;
+  --color-terracotta: #D95F3C;
+  --color-surface: #EAE6DE;
+  --color-border: #D9D4CB;
+  --color-muted: #8A8580;
+  --font-display: "Fraunces", serif;
   --font-body: "Inter", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-mono: "Space Mono", monospace;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-html {
-  background: var(--color-ink);
-  color: var(--color-paper);
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-}
-
-html.lenis {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
+html { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
