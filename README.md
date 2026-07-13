@@ -227,7 +227,7 @@ Yes. Gateway is built for Enterprise Grid from day one. Tool configurations can 
 <details>
 <summary><strong>What inspired this project?</strong></summary>
 
-Gateway is based on winning patterns from **Strata (YC P25)** — "One MCP server for AI to handle thousands of tools" — and **MCPay (Colosseum Cypherpunk, Stablecoin 1st)** — which won by connecting the MCP protocol to a new platform. Both proved that infrastructure layers connecting ecosystems win over individual integrations.
+Gateway was built for the Slack Agent Builder Challenge to solve the fragmentation problem: teams use dozens of tools but Slack has no unified way to query across them. The MCP protocol makes this possible — one standard interface for AI agents to talk to any tool. Gateway brings that power to Slack.
 </details>
 
 ## Powered by

@@ -39,16 +39,6 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-paper/30">© 2026 Gateway. Built for the Slack Agent Builder Challenge.</p>
-          <p className="text-xs text-paper/30">
-            Based on{" "}
-            <a href="https://www.ycombinator.com/companies/strata" className="text-paper/50 hover:text-signal transition-colors">
-              Strata (YC P25)
-            </a>{" "}
-            +{" "}
-            <a href="https://colosseum.com/companies" className="text-paper/50 hover:text-signal transition-colors">
-              MCPay (Colosseum)
-            </a>
-          </p>
         </div>
       </div>
     </footer>
