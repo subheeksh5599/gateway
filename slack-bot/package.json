@@ -1,0 +1,13 @@
+{
+  "name": "gateway-slack-bot",
+  "version": "1.0.0",
+  "description": "Gateway Slack Agent — @gateway in Slack queries MCP servers",
+  "type": "module",
+  "scripts": {
+    "start": "node src/bot.js",
+    "dev": "node --watch src/bot.js"
+  },
+  "dependencies": {
+    "@slack/bolt": "latest"
+  }
+}
