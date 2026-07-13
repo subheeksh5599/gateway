@@ -44,22 +44,10 @@ const availableTools: Tool[] = [
   { id: "linear", name: "Linear", icon: <Slash className="w-4 h-4" />, connected: false, description: "Issue tracking" },
 ];
 
-const sampleQueries: { q: string; response: string; tools: string[] }[] = [
-  {
-    q: "What's the status of the login bug fix?",
-    response: "Found the issue across your tools:\n\n**GitHub** → PR #342 \"Fix login redirect loop\" by @sarah — merged to main 2 hours ago\n**Jira** → DEV-187 marked \"Done\" yesterday, sprint review approved\n**Notion** → Release notes updated with fix details in v2.4.1 changelog\n\nLooks like it's resolved and deployed. Want me to check Sentry for any remaining login errors?",
-    tools: ["github", "jira", "notion"],
-  },
-  {
-    q: "Show me open pull requests that need review",
-    response: "Here are PRs waiting for review:\n\n1. **#356** — \"Add rate limiting middleware\" by @alex • 3 days old • +124/-18\n2. **#348** — \"Fix database connection pool exhaustion\" by @maya • 1 day old • +42/-8\n3. **#361** — \"Migrate to new auth flow\" by @jordan • opened today • +289/-156\n\nAll in the `backend` repo. Want me to assign reviewers?",
-    tools: ["github"],
-  },
-  {
-    q: "How many users signed up this week?",
-    response: "Querying across tools:\n\n**PostgreSQL** → 1,847 new signups this week (+12% WoW)\n**Stripe** → 342 new paid subscriptions, $28,400 MRR added\n**Notion** → Onboarding doc viewed 1,203 times\n\nTop acquisition channel: GitHub stars → signup flow (43% conversion).",
-    tools: ["postgres", "stripe", "notion"],
-  },
+const sampleQueries = [
+  "Show me open pull requests in React",
+  "Search for bug issues in Next.js",
+  "What's the MCP servers repo info?",
 ];
 
 export default function Dashboard() {
@@ -87,52 +75,56 @@ export default function Dashboard() {
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsProcessing(true);
+    setActiveToolCalls(["github"]);
 
-    // Find matching sample or generate generic response
-    const match = sampleQueries.find((s) =>
-      query.toLowerCase().includes(s.q.toLowerCase().split(" ").slice(0, 3).join(" "))
-    );
-    const tools = match?.tools || ["github", "notion"];
-    setActiveToolCalls(tools);
-
+    // Add agent placeholder with loading state
     const agentMsg: Message = {
       id: (Date.now() + 1).toString(),
       role: "agent",
       content: "",
-      toolCalls: tools.map((t) => ({ tool: t, status: "calling" })),
+      toolCalls: [{ tool: "github", status: "calling" }],
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, agentMsg]);
 
-    // Simulate tool calls sequentially
-    for (let i = 0; i < tools.length; i++) {
-      await new Promise((r) => setTimeout(r, 600 + Math.random() * 400));
+    try {
+      const res = await fetch("/api/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`API error: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      // Mark tools as done based on response
+      const toolNames = data.toolCalls?.length
+        ? data.toolCalls.map((t: string) => ({ tool: t, status: "done" as const }))
+        : [{ tool: "github", status: "done" as const }];
+
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === agentMsg.id
+            ? { ...m, content: data.response, toolCalls: toolNames }
+            : m
+        )
+      );
+    } catch (error) {
       setMessages((prev) =>
         prev.map((m) =>
           m.id === agentMsg.id
             ? {
                 ...m,
-                toolCalls: m.toolCalls?.map((tc, idx) =>
-                  idx === i ? { ...tc, status: "done" as const } : tc
-                ),
+                content: `Error: ${error instanceof Error ? error.message : "Failed to query tools"}. The demo uses real GitHub API — rate limits may apply.`,
+                toolCalls: [{ tool: "github", status: "error" as const }],
               }
             : m
         )
       );
     }
-
-    await new Promise((r) => setTimeout(r, 400));
-
-    setMessages((prev) =>
-      prev.map((m) =>
-        m.id === agentMsg.id
-          ? {
-              ...m,
-              content: match?.response || `Here's what I found about "${query}":\n\nI searched across your connected tools (${tools.map((t) => availableTools.find((at) => at.id === t)?.name).join(", ")}) but couldn't find a direct match. Try rephrasing or connecting more tools.`,
-            }
-          : m
-      )
-    );
 
     setActiveToolCalls([]);
     setIsProcessing(false);
@@ -215,10 +207,10 @@ export default function Dashboard() {
                     {sampleQueries.slice(0, 3).map((s, i) => (
                       <button
                         key={i}
-                        onClick={() => handleSend(s.q)}
+                        onClick={() => handleSend(s)}
                         className="text-xs px-3 py-1.5 rounded-full border border-paper/10 text-paper/50 hover:border-signal/30 hover:text-paper/80 transition-all"
                       >
-                        {s.q}
+                        {s}
                       </button>
                     ))}
                   </div>

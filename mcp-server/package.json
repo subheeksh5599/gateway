@@ -1,0 +1,22 @@
+{
+  "name": "gateway-mcp-server",
+  "version": "1.0.0",
+  "description": "Gateway MCP Server — connects Slack to any tool via MCP. GitHub, Jira, Notion, databases.",
+  "type": "module",
+  "bin": {
+    "gateway-mcp": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "dev": "tsc && node build/index.js",
+    "inspector": "npx @modelcontextprotocol/inspector node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "latest"
+  },
+  "devDependencies": {
+    "typescript": "~5.7.0",
+    "@types/node": "latest"
+  }
+}
