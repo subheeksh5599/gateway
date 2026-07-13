@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ArrowRight, Slack } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 
 export default function Hero() {
@@ -43,7 +43,7 @@ export default function Hero() {
               href="#"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-signal text-ink font-semibold hover:bg-signal/90 transition-colors text-sm"
             >
-              <Slack className="w-4 h-4" />
+              <span className="font-bold text-base">#</span>
               Add to Slack
               <ArrowRight className="w-4 h-4" />
             </a>

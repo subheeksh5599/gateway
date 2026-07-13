@@ -5,7 +5,7 @@ import {
   Search,
   Send,
   Database,
-  Github,
+  GitBranch,
   FileText,
   MessageSquare,
   Loader2,
@@ -34,7 +34,7 @@ interface Message {
 }
 
 const availableTools: Tool[] = [
-  { id: "github", name: "GitHub", icon: <Github className="w-4 h-4" />, connected: true, description: "Issues, PRs, repos" },
+  { id: "github", name: "GitHub", icon: <GitBranch className="w-4 h-4" />, connected: true, description: "Issues, PRs, repos" },
   { id: "jira", name: "Jira", icon: <Activity className="w-4 h-4" />, connected: true, description: "Tickets, sprints, boards" },
   { id: "notion", name: "Notion", icon: <FileText className="w-4 h-4" />, connected: true, description: "Docs, wikis, databases" },
   { id: "postgres", name: "PostgreSQL", icon: <Database className="w-4 h-4" />, connected: true, description: "Query your database" },
